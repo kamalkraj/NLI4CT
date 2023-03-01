@@ -1,0 +1,27 @@
+export BS=1; rm -rf output_dir_xxl_dev; PYTHONPATH=../../src USE_TF=0 /usr/bin/time -v deepspeed --num_gpus=8 ./run_summarization.py \
+--model_name_or_path google/flan-t5-xxl \
+--output_dir output_dir_xxl_dev \
+--train_file data/train.json \
+--validation_file data/dev.json \
+--test_file data/test.json \
+--do_eval \
+--do_train \
+--save_strategy epoch \
+--evaluation_strategy=steps \
+--gradient_accumulation_steps 1 \
+--learning_rate 7e-6 \
+--logging_first_step \
+--logging_steps 1000 \
+--max_source_length 1024 \
+--max_target_length 8 \
+--num_train_epochs 2 \
+--overwrite_output_dir \
+--per_device_eval_batch_size $BS \
+--per_device_train_batch_size $BS \
+--predict_with_generate \
+--eval_steps 1000 \
+--deepspeed ds_config.json \
+--fp16 \
+--fp16_backend apex \
+--fp16_opt_level 01
+
